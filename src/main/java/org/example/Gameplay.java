@@ -36,19 +36,15 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
     public void paint(Graphics g) {
         g.setColor(Color.black);
-        g.fillRect(0,0,500,800);
+        g.fillRect(0,0,Constants.WIDTH,Constants.HEIGHT);
 
         mapGen.draw((Graphics2D) g);
-
-        g.setColor(Color.cyan);
-        g.fillRect(paddle.getX(), 700, 100, 6);
+        paddle.paint(g);
+        ball.paint(g);
 
         g.setColor(Color.cyan);
         g.setFont(new Font("serif", Font.BOLD, 25));
         g.drawString(""+score, 450, 30);
-
-        g.setColor(Color.yellow);
-        g.fillOval(ball.getX(), ball.getY(), ball.getSize(), ball.getSize());
 
         if(totalBricks <= 0)
             Win(g);
@@ -89,10 +85,10 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
             ball.move();
 
-            if(new Rectangle(ball.getX(), ball.getY(), 15, 15).intersects(new Rectangle(paddle.getX(), 700, 100, 6)))
+            if(ball.getRectangle().intersects(paddle.getRectangle()))
                 ball.setDirY(-ball.getDirY());
 
-            arrayLoop: for(int i = 0; i < mapGen.map.length; i++) {
+            for(int i = 0; i < mapGen.map.length; i++) {
                 for(int j = 0; j < mapGen.map[0].length; j++) {
                     if(mapGen.map[i][j]) {
                         int brickX = j * mapGen.brickWidth + 20;
@@ -101,7 +97,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
                         int brickHeight = mapGen.brickHeight;
 
                         Rectangle rect = new Rectangle(brickX, brickY, brickWidth, brickHeight);
-                        Rectangle ballRect = new Rectangle(ball.getX(), ball.getY(), 15, 15);
+                        Rectangle ballRect = ball.getRectangle();
 
                         if(ballRect.intersects(rect)) {
                             mapGen.setBrickFlag(false, i, j);
@@ -113,19 +109,13 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
                             else
                                 ball.setDirY(-ball.getDirY());
 
-                            break arrayLoop;
                         }
                     }
                 }
             }
 
 
-            if (ball.getX() < 0)
-                ball.setDirX(-ball.getDirX());
-            if (ball.getY() < 0)
-                ball.setDirY(-ball.getDirY());
-            if (ball.getX() > 470)
-                ball.setDirX(-ball.getDirX());
+
 
         }
         repaint();

@@ -1,10 +1,9 @@
 package org.example;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class Paddle implements IListener {
+public class Paddle implements IListener, IPaintable {
     private final int width;
     private final int height;
     private int x;
@@ -16,6 +15,10 @@ public class Paddle implements IListener {
         this.x = 200;
         this.y = 700;
         this.distanceToMove = 20;
+    }
+
+    public Rectangle getRectangle() {
+        return new Rectangle(this.x, this.y, this.width, this.height);
     }
 
     public int getX() {
@@ -41,8 +44,8 @@ public class Paddle implements IListener {
                     this.setX(this.getX() - this.distanceToMove);
                 break;
             case KeyEvent.VK_D:
-                if (this.x >= Constants.RIGHTMOST_POSITION)
-                    this.x = Constants.RIGHTMOST_POSITION;
+                if (this.x >= Constants.RIGHTMOST_POSITION - this.width)
+                    this.x = Constants.RIGHTMOST_POSITION - this.width;
                 else
                     this.setX(this.getX() + this.distanceToMove);
                 break;
@@ -51,4 +54,10 @@ public class Paddle implements IListener {
 
     @Override
     public void keyReleased(KeyEvent e) {    }
+
+    @Override
+    public void paint(Graphics g) {
+        g.setColor(Color.cyan);
+        g.fillRect(this.x, this.y, this.width, this.height);
+    }
 }

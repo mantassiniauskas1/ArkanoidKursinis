@@ -1,6 +1,8 @@
 package org.example;
 
-public class Ball {
+import java.awt.*;
+
+public class Ball implements IPaintable {
     private int x, y;
     private final int size = 15;
     private final int speed;
@@ -18,6 +20,17 @@ public class Ball {
     public void move() {
         this.x = this.x + this.speed * this.dirX;
         this.y = this.y + this.speed * this.dirY;
+        
+        if (this.x < 0)
+            setDirX(-this.dirX);
+        if (this.y < 0)
+            setDirY(-this.dirY);
+        if (this.x > Constants.RIGHTMOST_POSITION)
+            setDirX(-this.dirX);
+    }
+
+    public Rectangle getRectangle() {
+        return new Rectangle(this.x, this.y, this.size, this.size);
     }
 
     public int getX() {
@@ -58,5 +71,11 @@ public class Ball {
 
     public void setDirY(int dirY) {
         this.dirY = dirY;
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        g.setColor(Color.yellow);
+        g.fillOval(this.x, this.y, this.size, this.size);
     }
 }
