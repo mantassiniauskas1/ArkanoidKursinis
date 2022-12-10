@@ -7,9 +7,9 @@ public class Main {
     {
         JFrame obj = new JFrame();
         Gameplay gameplay = new Gameplay();
-        obj.setBounds(0, 0, 500, 800);
+        obj.setBounds(0, 0, Constants.WIDTH, Constants.HEIGHT);
         obj.setLocationRelativeTo(null);
-        obj.setTitle("Arkanoid kursinis");
+        obj.setTitle(Constants.TITLE);
         obj.setResizable(false);
         obj.setVisible(true);
         obj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
